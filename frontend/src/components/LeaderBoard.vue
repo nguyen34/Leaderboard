@@ -3,6 +3,7 @@
       <!-- Add your work here -->
       <div>
         <h1>LeaderBoard</h1>
+        <v-text-field v-model="searchFilter" label="Search by Name" variant="outlined"></v-text-field>
         <table>
           <thead>
             <tr>
@@ -15,20 +16,33 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(user, index) in users" :key="user.id">
+            <tr v-for="(user, index) in displayedUsers" :key="user.id">
              <td><v-btn variant="outlined" @click="handleDelete(user)">X</v-btn></td>
               <td>{{ index + 1 }}</td>
-              <td>{{ user.name }}</td>
+              <td><span @click="showUserDetailsDialog(user)">{{ user.name }}</span></td>
               <td><v-btn variant="outlined" @click="handleIncrement(user)">+</v-btn></td>
               <td><v-btn variant="outlined" @click="handleDecrement(user)">-</v-btn></td>
               <td>{{ user.points }}</td>
             </tr>
           </tbody>
         </table>
-        <v-btn variant="outlined">
-            + Add New User
-        </v-btn>
-        <AddNewUserModal :open="openDialog" />
+        <AddNewUserModal />
+        <v-dialog v-model="showUserDetails">
+          <v-card>
+            <v-card-title>
+              <span class="headline">User Details</span>
+            </v-card-title>
+            <v-card-text>
+              <div>Name: {{ selectedUser.name }}</div>
+              <div>Age: {{ selectedUser.age }}</div>
+              <div>Address: {{ selectedUser.address }}</div>
+              <div>Points: {{ selectedUser.points }}</div>
+            </v-card-text>
+            <v-card-actions>
+              <v-btn color="primary" block @click="showUserDetails = false">Close Dialog</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </div>
     </v-container>
   </template>
@@ -49,22 +63,37 @@
 
     data() {
       return {
-        openDialog: false,
-        //
+        showUserDetails: false,
+        selectedUser: null,
+        searchFilter: '',
+        displayedUsers: [],
+        reverseScoreSort: false,
       }
     },
 
     computed: {
       ...mapState('userLeaderboards', ['users']),
+      filteredUsers() {
+        return this.users.filter(user => {
+          return user.name.toLowerCase().includes(this.searchFilter.toLowerCase());
+        });
+      },
       
     },
     
     mounted() {
         this.fetchUsers();
+        this.displayedUsers = this.users;
     },
 
     watch: {
-      //
+      searchFilter(value) {
+        if(value){
+          this.displayedUsers = this.filteredUsers;
+        } else {
+          this.displayedUsers = this.users;
+        }
+      },
     },
 
     methods: {
@@ -74,15 +103,17 @@
         handleDelete(id) {
             this.$store.dispatch('userLeaderboards/deleteUser', id);
         },
-        toggleNewUserDialog() {
-            this.openDialog = !this.openDialog;
-        },
         handleIncrement(user) {
             this.$store.dispatch('userLeaderboards/incrementUserScore', user);
         },
         handleDecrement(user) {
             this.$store.dispatch('userLeaderboards/decrementUserScore', user);
         },
+
+      showUserDetailsDialog(user) {
+        this.selectedUser = user;
+        this.showUserDetails = true;
+      },
       //
     }
 

@@ -1,28 +1,79 @@
 <template>
-    <v-dialog v-model="open" max-width="500px">
+    <div class="text-center">
+      <v-btn
+        variant="outlined"
+        @click="dialog = true"
+      >
+        + Add New User
+      </v-btn>
+  
+      <v-dialog
+        v-model="dialog"
+        width="auto"
+      >
         <v-card>
-        <v-card-title>
-            <span class="headline">Add New User</span>
-        </v-card-title>
-    
-    
-        <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-            <v-btn color="blue darken-1" text @click="save">Save</v-btn>
-        </v-card-actions>
+          <v-card-text>
+            <v-form @submit.prevent="handleSubmit">
+              <v-text-field
+                v-model="name"
+                label="Name"
+                required
+              ></v-text-field>
+              <v-text-field
+                v-model="age"
+                label="Age"
+                required
+              ></v-text-field>
+              <v-text-field
+                v-model="address"
+                label="Address"
+                required
+              ></v-text-field>
+              <v-card-actions>
+                <v-btn color="primary" block type="submit">Add User</v-btn>
+              </v-card-actions>
+            </v-form>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn color="primary" block @click="close()">Close Dialog</v-btn>
+          </v-card-actions>
         </v-card>
-    </v-dialog>
-</template>
+      </v-dialog>
+    </div>
+  </template>
+  
+  <script>
+  import { mapState } from 'vuex';
 
-<script>
-export default {
+  export default {
     name: "AddNewUserModal",
-    props: {
-        open: {
-            type: Boolean,
-            required: true,
-        }
+    data: () => ({
+      dialog: false,
+      name: '',
+      age: 0,
+      address: '',
+    }),
+
+    computed: {
+      ...mapState('userLeaderboards', ['users']),
     },
-}
-</script>
+    methods: {
+      close() {
+        this.dialog = false;
+      },
+      handleSubmit() {
+        const newId = this.users.length + 1;
+        const user = {
+          id: newId,
+          name: this.name,
+          age: this.age,
+          address: this.address,
+          points: 0,
+        };
+        this.$store.dispatch('userLeaderboards/addUser', user);
+        this.dialog = false;
+      },
+    },
+  }
+  </script>
+  
