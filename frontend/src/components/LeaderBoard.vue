@@ -81,8 +81,8 @@
       
     },
     
-    mounted() {
-        this.fetchUsers();
+    async mounted() {
+        await this.fetchUsers();
         this.displayedUsers = this.users;
     },
 
@@ -97,8 +97,8 @@
     },
 
     methods: {
-        fetchUsers() {
-            this.$store.dispatch('userLeaderboards/fetchUsers');
+        async fetchUsers() {
+            await this.$store.dispatch('userLeaderboards/fetchUsers');
         },
         handleDelete(id) {
             this.$store.dispatch('userLeaderboards/deleteUser', id);

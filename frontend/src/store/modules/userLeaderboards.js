@@ -1,3 +1,5 @@
+import axios from '@/plugins/axios';
+
 export default {
     namespaced: true,
     state: {
@@ -28,8 +30,9 @@ export default {
 
     actions: {
         async fetchUsers(context) {
-            // const response = await this.$axios.get('/users');
-            // const users = await response.data;
+            console.log(this);
+            const response = await axios.get('/users/fetch/');
+            console.log(response.data);
             const users = [
                 // Hardcoded for now. We'll replace this with an API call later.
                 {
@@ -73,27 +76,27 @@ export default {
         },
 
         async addUser(context, user) {
-            //const response = await this.$axios.post('/users/add', user);
-            // const newUser = await response.data';
+            const response = await axios.post('/users/add/', user );
+            console.log(response.data);
             console.log("Users Added");
             context.commit('addUser', user);
         },
 
         async deleteUser(context, user) {
-            // await this.$axios.delete(`/users/delete/${user.id}`);
-            console.log("Users Deleted");
+            const response = await axios.delete(`/users/delete/${user.id}`);
+            console.log(response.data);
             context.commit('deleteUser', user);
         },
 
         async incrementUserScore(context, user) {
-            // await this.$axios.patch(`/users/increment/${user.id}`);
-            console.log("Users Incremented");
+            const response = await axios.patch(`/users/increment/${user.id}`);
+            console.log(response.data);
             context.commit('incrementUserScore', user);
         },
 
         async decrementUserScore(context, user) {
-            // await this.$axios.patch(`/users/decrement/${user.id}`);
-            console.log("Users Decremented");
+            const response = await axios.patch(`/users/decrement/${user.id}`);
+            console.log(response.data);
             context.commit('decrementUserScore', user);
         }
     },
