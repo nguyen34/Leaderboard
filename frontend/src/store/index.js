@@ -1,11 +1,11 @@
 import { createStore } from 'vuex';
-import test from '@/store/modules/test';
+import userLeaderboards from '@/store/modules/userLeaderboards';
 
 
 
 const store = createStore({
     modules: {
-        test
+        userLeaderboards,
     }
 });
 
