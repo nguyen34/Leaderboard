@@ -62,13 +62,10 @@
         this.dialog = false;
       },
       handleSubmit() {
-        const newId = this.users.length + 1;
         const user = {
-          id: newId,
           name: this.name,
           age: this.age,
           address: this.address,
-          points: 0,
         };
         this.$store.dispatch('userLeaderboards/addUser', user);
         this.dialog = false;

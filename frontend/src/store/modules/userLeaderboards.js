@@ -23,7 +23,9 @@ export default {
         },
 
         decrementUserScore(state, user) {
-            state.users[state.users.indexOf(user)].points--;
+            if (state.users[state.users.indexOf(user)].points > 0)  {
+                state.users[state.users.indexOf(user)].points--;
+            }
         }
 
     },
@@ -33,58 +35,18 @@ export default {
             console.log(this);
             const response = await axios.get('/users/fetch/');
             console.log(response.data);
-            const users = [
-                // Hardcoded for now. We'll replace this with an API call later.
-                {
-                    id: 1,
-                    name: 'Emma',
-                    age : 25,
-                    address: '1234 Main St',
-                    points: 0,
-                },
-                {
-                    id: 2,
-                    name: 'Noah',
-                    age : 30,
-                    address: '1233 Min St',
-                    points: 0,
-                },
-                {
-                    id: 3,
-                    name: 'James',
-                    age : 35,
-                    address: '1232 Main St',
-                    points: 0,
-                },
-                {
-                    id: 4,
-                    name: 'William',
-                    age : 40,
-                    address: '1231 Main St',
-                    points: 0,
-                },
-                {
-                    id: 5,
-                    name: 'Olivia',
-                    age : 45,
-                    address: '1230 Main St',
-                    points: 0,
-                },
-            ];
-            console.log("Users Fetched");
+            const users = response.data;
             context.commit('setUsers', users);
         },
 
         async addUser(context, user) {
             const response = await axios.post('/users/add/', user );
-            console.log(response.data);
-            console.log("Users Added");
-            context.commit('addUser', user);
+            const newUser = response.data;
+            context.commit('addUser', newUser);
         },
 
         async deleteUser(context, user) {
-            const response = await axios.delete(`/users/delete/${user.id}`);
-            console.log(response.data);
+            await axios.delete(`/users/delete/${user.id}`);
             context.commit('deleteUser', user);
         },
 

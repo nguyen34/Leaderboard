@@ -11,3 +11,12 @@ class User(models.Model):
 
     def __str__(self):
         return self.name
+
+    def to_dict(self) -> dict:
+        return {
+            'id': self.id,
+            'name': self.name,
+            'age': self.age,
+            'address': self.address,
+            'points': self.points
+        }
