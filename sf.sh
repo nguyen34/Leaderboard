@@ -67,16 +67,16 @@ fn_backend() {
             source .env/bin/activate
             ;;
         run|start)
-            pipenv run python manage.py runserver
+            python manage.py runserver
             ;;
         startapp)
-            pipenv run python manage.py startapp $2
+            python manage.py startapp $2
             ;;
         migrate)
-            pipenv run python manage.py migrate
+            python manage.py migrate
             ;;
         makemigrations)
-            pipenv run python manage.py makemigrations
+            python manage.py makemigrations
             ;;
         *)
             echo "Unknown command"
