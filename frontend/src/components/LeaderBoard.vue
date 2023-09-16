@@ -9,10 +9,10 @@
             <tr>
               <th></th>
               <th>Rank</th>
-              <th>Name</th>
+              <th @click="toggleNameSort">Name</th>
               <th></th>
               <th></th>
-              <th>Score</th>
+              <th @click="togglePointSort">Score</th>
             </tr>
           </thead>
           <tbody>
@@ -67,7 +67,8 @@
         selectedUser: null,
         searchFilter: '',
         displayedUsers: [],
-        reverseScoreSort: false,
+        sortOrder: '',
+        sortHeader: '',
       }
     },
 
@@ -84,6 +85,7 @@
     async mounted() {
         await this.fetchUsers();
         this.displayedUsers = this.users;
+        this.filterAndSortUsers('points', 'desc');
     },
 
     watch: {
@@ -94,6 +96,11 @@
           this.displayedUsers = this.users;
         }
       },
+
+      users() {
+        console.log("users changed");
+        this.filterAndSortUsers(this.sortHeader, this.sortOrder);
+    },
     },
 
     methods: {
@@ -103,17 +110,73 @@
         handleDelete(id) {
             this.$store.dispatch('userLeaderboards/deleteUser', id);
         },
-        handleIncrement(user) {
-            this.$store.dispatch('userLeaderboards/incrementUserScore', user);
+        async handleIncrement(user) {
+            await this.$store.dispatch('userLeaderboards/incrementUserScore', user);
+            this.filterAndSortUsers(this.sortHeader, this.sortOrder);
         },
-        handleDecrement(user) {
-            this.$store.dispatch('userLeaderboards/decrementUserScore', user);
+        async handleDecrement(user) {
+            await this.$store.dispatch('userLeaderboards/decrementUserScore', user);
+            this.filterAndSortUsers(this.sortHeader, this.sortOrder);
         },
 
       showUserDetailsDialog(user) {
         this.selectedUser = user;
         this.showUserDetails = true;
       },
+
+      toggleNameSort() {
+        console.log("function called");
+        if (this.sortHeader === 'name') {
+          if (this.sortOrder === 'asc') {
+            this.filterAndSortUsers('name', 'desc');
+          } else {
+            this.filterAndSortUsers('name', 'asc');
+          }
+        } else {
+          this.filterAndSortUsers('name', 'asc');
+        }
+      },
+
+      togglePointSort() {
+        
+        if (this.sortHeader === 'points') {
+          if (this.sortOrder === 'asc') {
+            this.filterAndSortUsers('points', 'desc');
+          } else {
+            this.filterAndSortUsers('points', 'asc');
+          }
+        } else {
+          this.filterAndSortUsers('points', 'asc');
+        }
+      },
+
+      filterAndSortUsers(newSortHeader, newSortOrder){
+        let results = this.users;
+        this.sortHeader = newSortHeader;
+        this.sortOrder = newSortOrder;
+        if (this.searchFilter) {
+          results.filter(user => {
+            return user.name.toLowerCase().includes(this.searchFilter.toLowerCase());
+          });
+        }
+
+        this.displayedUsers = results.sort((a, b) => {
+          if (this.sortHeader === 'points'){
+          if (this.sortOrder === 'asc') {
+            return a[this.sortHeader] - b[this.sortHeader];
+          } else {
+            return b[this.sortHeader] - a[this.sortHeader];
+          }
+        } else if (this.sortHeader === 'name') {
+          if (this.sortOrder === 'asc') {
+            return a[this.sortHeader].localeCompare(b[this.sortHeader]);
+          } else {
+            return b[this.sortHeader].localeCompare(a[this.sortHeader]);
+          }
+        }
+        });
+
+      }
       //
     }
 

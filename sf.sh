@@ -62,6 +62,7 @@ fn_backend() {
     while test $count -gt 0; do ((count=count - 1)); shift; done
     
     cd backend
+    source .env/bin/activate
     case $1 in
         env)
             source .env/bin/activate

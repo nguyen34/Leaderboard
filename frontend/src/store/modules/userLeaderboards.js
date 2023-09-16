@@ -32,9 +32,7 @@ export default {
 
     actions: {
         async fetchUsers(context) {
-            console.log(this);
             const response = await axios.get('/users/fetch/');
-            console.log(response.data);
             const users = response.data;
             context.commit('setUsers', users);
         },
