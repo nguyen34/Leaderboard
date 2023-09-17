@@ -15,25 +15,28 @@
         <v-card>
           <v-card-text>
             <!-- TODO: Add Form Validation. User can only enter numbers for age, and name and address cannot be blank-->
-            <v-form @submit.prevent="handleSubmit">
+            <v-form v-model="isFormValid" @submit.prevent="handleSubmit">
               <v-text-field
                 v-model="name"
                 label="Name"
+                :rules="textRules"
                 required
               ></v-text-field>
-              <!-- TODO: Turn this to a number selector? -->
               <v-text-field
                 v-model="age"
                 label="Age"
+                type="number"
+                :rules="numberRules"
                 required
               ></v-text-field>
               <v-text-field
                 v-model="address"
                 label="Address"
+                :rules="textRules"
                 required
               ></v-text-field>
               <v-card-actions>
-                <v-btn color="primary" block type="submit">Add User</v-btn>
+                <v-btn :disabled="!isFormValid" color="primary" block type="submit">Add User</v-btn>
               </v-card-actions>
             </v-form>
           </v-card-text>
@@ -55,6 +58,14 @@
       name: '',
       age: 0,
       address: '',
+      isFormValid: false,
+      textRules: [
+        v => !!v || 'Text is required',
+      ],
+      numberRules: [
+        v => !!v || 'Number is required',
+        v => (v > 0 && v <= 100) || 'Age must be between 1 and 100',
+      ],
     }),
 
     computed: {
