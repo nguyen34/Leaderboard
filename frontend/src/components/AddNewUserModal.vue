@@ -4,7 +4,8 @@
         variant="outlined"
         @click="dialog = true"
       >
-        + Add New User
+        <v-icon left icon="mdi-plus"/>
+         Add New User
       </v-btn>
   
       <v-dialog
@@ -70,7 +71,7 @@
           age: this.age,
           address: this.address,
         };
-        await this.$store.dispatch('userLeaderboards/addUser', user);
+        await this.addUser(user);
         this.$emit('user-added');
         this.dialog = false;
       },

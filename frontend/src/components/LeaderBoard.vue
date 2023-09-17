@@ -9,19 +9,19 @@
             <tr>
               <th></th>
               <th>Rank</th>
-              <th @click="toggleNameSort">Name  <v-icon v-if="sortHeader === 'name'" color="white" :icon="sortOrder ==='asc' ? 'mdi-chevron-down' : 'mdi-chevron-up'"/></th>
+              <th @click="toggleNameSort">Name  <v-icon v-if="sortHeader === 'name'" :icon="sortOrder ==='asc' ? 'mdi-chevron-down' : 'mdi-chevron-up'"/></th>
               <th></th>
               <th></th>
-              <th @click="togglePointSort">Score <v-icon v-if="sortHeader === 'points'" color="white" :icon="sortOrder ==='asc' ? 'mdi-chevron-down' : 'mdi-chevron-up'"/> </th>
+              <th @click="togglePointSort">Score <v-icon v-if="sortHeader === 'points'" :icon="sortOrder ==='asc' ? 'mdi-chevron-down' : 'mdi-chevron-up'"/> </th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(user, index) in displayedUsers" :key="user.id">
-             <td><v-btn variant="outlined" @click="handleDelete(user)">X</v-btn></td>
+             <td><v-btn variant="outlined" @click="handleDelete(user)"><v-icon icon="mdi-close"/></v-btn></td>
               <td>{{ index + 1 }}</td>
               <td><span @click="showUserDetailsDialog(user)">{{ user.name }}</span></td>
-              <td><v-btn variant="outlined" @click="handleIncrement(user)">+</v-btn></td>
-              <td><v-btn variant="outlined" @click="handleDecrement(user)">-</v-btn></td>
+              <td><v-btn variant="outlined" @click="handleIncrement(user)"><v-icon icon="mdi-plus"/></v-btn></td>
+              <td><v-btn variant="outlined" @click="handleDecrement(user)"><v-icon icon="mdi-minus"/></v-btn></td>
               <td>{{ user.points }}</td>
             </tr>
           </tbody>
