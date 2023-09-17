@@ -51,8 +51,6 @@
 
   import { mapState, mapActions } from 'vuex';
   import AddNewUserModal from './AddNewUserModal.vue';
-
-  
   export default {
     name: 'LeaderBoard',
     components: {
@@ -88,7 +86,6 @@
       },
 
       users() {
-        console.log("users changed");
         this.filterAndSortUsers(this.sortHeader, this.sortOrder);
     },
     },
