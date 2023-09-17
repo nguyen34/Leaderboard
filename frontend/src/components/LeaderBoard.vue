@@ -4,15 +4,15 @@
       <div>
         <h1>LeaderBoard</h1>
         <v-text-field v-model="searchFilter" label="Search by Name" variant="outlined"></v-text-field>
-        <table>
+        <table class="my-10">
           <thead>
             <tr>
               <th></th>
               <th>Rank</th>
-              <th @click="toggleNameSort">Name</th>
+              <th @click="toggleNameSort">Name  <v-icon v-if="sortHeader === 'name'" color="white" :icon="sortOrder ==='asc' ? 'mdi-chevron-down' : 'mdi-chevron-up'"/></th>
               <th></th>
               <th></th>
-              <th @click="togglePointSort">Score</th>
+              <th @click="togglePointSort">Score <v-icon v-if="sortHeader === 'points'" color="white" :icon="sortOrder ==='asc' ? 'mdi-chevron-down' : 'mdi-chevron-up'"/> </th>
             </tr>
           </thead>
           <tbody>
@@ -26,7 +26,7 @@
             </tr>
           </tbody>
         </table>
-        <AddNewUserModal />
+        <AddNewUserModal @user-added="filterAndSortUsers(sortHeader, sortOrder)" />
         <v-dialog v-model="showUserDetails">
           <v-card>
             <v-card-title>
@@ -49,7 +49,7 @@
   
   <script>
 
-  import { mapState } from 'vuex';
+  import { mapState, mapActions } from 'vuex';
   import AddNewUserModal from './AddNewUserModal.vue';
 
   
@@ -73,28 +73,18 @@
     },
 
     computed: {
-      ...mapState('userLeaderboards', ['users']),
-      filteredUsers() {
-        return this.users.filter(user => {
-          return user.name.toLowerCase().includes(this.searchFilter.toLowerCase());
-        });
-      },
-      
+      ...mapState('userLeaderboards', ['users']),      
     },
     
     async mounted() {
-        await this.fetchUsers();
+        await this.getUsers();
         this.displayedUsers = this.users;
         this.filterAndSortUsers('points', 'desc');
     },
 
     watch: {
-      searchFilter(value) {
-        if(value){
-          this.displayedUsers = this.filteredUsers;
-        } else {
-          this.displayedUsers = this.users;
-        }
+      searchFilter() {
+        this.filterAndSortUsers(this.sortHeader, this.sortOrder);
       },
 
       users() {
@@ -104,18 +94,19 @@
     },
 
     methods: {
-        async fetchUsers() {
-            await this.$store.dispatch('userLeaderboards/fetchUsers');
+      ...mapActions('userLeaderboards', ['fetchUsers', 'deleteUser', 'incrementUserScore', 'decrementUserScore']),
+        async getUsers() {
+            await this.fetchUsers();
         },
-        handleDelete(id) {
-            this.$store.dispatch('userLeaderboards/deleteUser', id);
+        async handleDelete(id) {
+            await this.deleteUser(id);
         },
         async handleIncrement(user) {
-            await this.$store.dispatch('userLeaderboards/incrementUserScore', user);
+            await this.incrementUserScore(user);
             this.filterAndSortUsers(this.sortHeader, this.sortOrder);
         },
         async handleDecrement(user) {
-            await this.$store.dispatch('userLeaderboards/decrementUserScore', user);
+            await this.decrementUserScore(user); 
             this.filterAndSortUsers(this.sortHeader, this.sortOrder);
         },
 
@@ -125,7 +116,6 @@
       },
 
       toggleNameSort() {
-        console.log("function called");
         if (this.sortHeader === 'name') {
           if (this.sortOrder === 'asc') {
             this.filterAndSortUsers('name', 'desc');
@@ -138,7 +128,6 @@
       },
 
       togglePointSort() {
-        
         if (this.sortHeader === 'points') {
           if (this.sortOrder === 'asc') {
             this.filterAndSortUsers('points', 'desc');
@@ -155,7 +144,8 @@
         this.sortHeader = newSortHeader;
         this.sortOrder = newSortOrder;
         if (this.searchFilter) {
-          results.filter(user => {
+          console.log("search filter is not empty");
+          results = results.filter(user => {
             return user.name.toLowerCase().includes(this.searchFilter.toLowerCase());
           });
         }

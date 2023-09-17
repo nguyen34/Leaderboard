@@ -13,12 +13,14 @@
       >
         <v-card>
           <v-card-text>
+            <!-- TODO: Add Form Validation. User can only enter numbers for age, and name and address cannot be blank-->
             <v-form @submit.prevent="handleSubmit">
               <v-text-field
                 v-model="name"
                 label="Name"
                 required
               ></v-text-field>
+              <!-- TODO: Turn this to a number selector? -->
               <v-text-field
                 v-model="age"
                 label="Age"
@@ -43,7 +45,7 @@
   </template>
   
   <script>
-  import { mapState } from 'vuex';
+  import { mapState, mapActions } from 'vuex';
 
   export default {
     name: "AddNewUserModal",
@@ -58,16 +60,18 @@
       ...mapState('userLeaderboards', ['users']),
     },
     methods: {
+      ...mapActions('userLeaderboards', ['addUser']),
       close() {
         this.dialog = false;
       },
-      handleSubmit() {
+      async handleSubmit() {
         const user = {
           name: this.name,
           age: this.age,
           address: this.address,
         };
-        this.$store.dispatch('userLeaderboards/addUser', user);
+        await this.$store.dispatch('userLeaderboards/addUser', user);
+        this.$emit('user-added');
         this.dialog = false;
       },
     },
