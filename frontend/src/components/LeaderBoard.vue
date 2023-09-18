@@ -1,38 +1,39 @@
 <template>
+  <!--TODO: Consider adjusting component placementto be at the top of the page and centered-->
     <v-container fluid>
-      <!-- Add your work here -->
       <div>
         <h1>LeaderBoard</h1>
-        <v-text-field v-model="searchFilter" label="Search by Name" variant="outlined"></v-text-field>
-        <table class="my-10">
+        <v-text-field class="mt-4" v-model="searchFilter" label="Search by Name" variant="outlined"></v-text-field>
+        <table>
           <thead>
             <tr>
               <th></th>
-              <th>Rank</th>
-              <th @click="toggleNameSort">Name  <v-icon v-if="sortHeader === 'name'" :icon="sortOrder ==='asc' ? 'mdi-chevron-down' : 'mdi-chevron-up'"/></th>
+              <th @click="toggleNameSort" class="clickable d-flex align-center px-4">Name  <v-icon :class="{ 'invisible': sortHeader !== 'name' }" :icon="sortOrder ==='asc' ? 'mdi-chevron-down' : 'mdi-chevron-up'"/></th>
               <th></th>
               <th></th>
-              <th @click="togglePointSort">Score <v-icon v-if="sortHeader === 'points'" :icon="sortOrder ==='asc' ? 'mdi-chevron-down' : 'mdi-chevron-up'"/> </th>
+              <th @click="togglePointSort" class="clickable d-flex align-center px-4">Score <v-icon :class="{ 'invisible': sortHeader !== 'points' }" :icon="sortOrder ==='asc' ? 'mdi-chevron-down' : 'mdi-chevron-up'"/> </th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(user, index) in displayedUsers" :key="user.id">
+            <tr v-for="user in displayedUsers" :key="user.id" class="my-4">
              <td><v-btn variant="outlined" @click="handleDelete(user)"><v-icon icon="mdi-close"/></v-btn></td>
-              <td>{{ index + 1 }}</td>
-              <td><span @click="showUserDetailsDialog(user)">{{ user.name }}</span></td>
-              <td><v-btn variant="outlined" @click="handleIncrement(user)"><v-icon icon="mdi-plus"/></v-btn></td>
-              <td><v-btn variant="outlined" @click="handleDecrement(user)"><v-icon icon="mdi-minus"/></v-btn></td>
-              <td>{{ user.points }}</td>
+             <!-- TODO: Edge Case. Handle overflow for name-->
+              <td class="px-4"><span @click="showUserDetailsDialog(user)" class="clickable">{{ user.name }}</span></td>
+              <td class="pl-4"><v-btn variant="outlined" @click="handleIncrement(user)"><v-icon icon="mdi-plus"/></v-btn></td>
+              <td class="pr-4"><v-btn :disabled="user.points === 0" variant="outlined" @click="handleDecrement(user)"><v-icon icon="mdi-minus"/></v-btn></td>
+              <td class="px-4">{{ user.points }}</td>
             </tr>
           </tbody>
         </table>
         <AddNewUserModal @user-added="filterAndSortUsers(sortHeader, sortOrder)" />
+        <!--TODO: Consider adding display breakpoints to re-adjust size of the card-->
         <v-dialog v-model="showUserDetails">
-          <v-card>
+          <v-card class="w-50 ma-auto">
             <v-card-title>
               <span class="headline">User Details</span>
             </v-card-title>
             <v-card-text>
+              <!-- TODO: Handle overflow for Name and Address -->
               <div>Name: {{ selectedUser.name }}</div>
               <div>Age: {{ selectedUser.age }}</div>
               <div>Address: {{ selectedUser.address }}</div>
@@ -170,3 +171,13 @@
   };
   </script>
   
+  <styles lang="scss" scoped>
+  .clickable {
+    cursor: pointer;
+  }
+
+  .invisible {
+    visibility: hidden;
+  }
+  
+  </styles>

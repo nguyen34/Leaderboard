@@ -1,5 +1,5 @@
 <template>
-    <div class="text-center">
+    <div class="text-center py-4 d-flex justify-end">
       <v-btn
         variant="outlined"
         @click="dialog = true"
@@ -12,9 +12,8 @@
         v-model="dialog"
         width="auto"
       >
-        <v-card>
+        <v-card class="w-100">
           <v-card-text>
-            <!-- TODO: Add Form Validation. User can only enter numbers for age, and name and address cannot be blank-->
             <v-form v-model="isFormValid" @submit.prevent="handleSubmit">
               <v-text-field
                 v-model="name"
@@ -89,4 +88,7 @@
     },
   }
   </script>
+  <styles lang="scss" scoped>
+  
+  </styles>
   
