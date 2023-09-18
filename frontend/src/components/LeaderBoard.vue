@@ -15,9 +15,10 @@
             </tr>
           </thead>
           <tbody>
+            <!--TODO: Add Scrolling to table body to handle overflow in case of large table-->
             <tr v-for="user in displayedUsers" :key="user.id" class="my-4">
              <td><v-btn variant="outlined" @click="handleDelete(user)"><v-icon icon="mdi-close"/></v-btn></td>
-             <!-- TODO: Edge Case. Handle overflow for name-->
+             <!-- TODO: Edge Case. Handle overflow for name. Also Add tooltip to display full name-->
               <td class="px-4"><span @click="showUserDetailsDialog(user)" class="clickable">{{ user.name }}</span></td>
               <td class="pl-4"><v-btn variant="outlined" @click="handleIncrement(user)"><v-icon icon="mdi-plus"/></v-btn></td>
               <td class="pr-4"><v-btn :disabled="user.points === 0" variant="outlined" @click="handleDecrement(user)"><v-icon icon="mdi-minus"/></v-btn></td>
@@ -142,7 +143,6 @@
         this.sortHeader = newSortHeader;
         this.sortOrder = newSortOrder;
         if (this.searchFilter) {
-          console.log("search filter is not empty");
           results = results.filter(user => {
             return user.name.toLowerCase().includes(this.searchFilter.toLowerCase());
           });

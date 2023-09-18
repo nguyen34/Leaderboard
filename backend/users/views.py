@@ -35,8 +35,6 @@ def add_user(request: WSGIRequest) -> JsonResponse:
         return JsonResponse({"message": f'Error: {e}'}, status=400)
     return JsonResponse(data=user, safe=False, status=200)
 
-# TODO: Consider combining increment and decrement into one function
-
 
 def increment_user_score(request: WSGIRequest, id: int) -> JsonResponse:
     try:
