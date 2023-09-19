@@ -79,6 +79,9 @@ fn_backend() {
         makemigrations)
             python manage.py makemigrations
             ;;
+        test)
+            python manage.py test
+            ;;
         *)
             echo "Unknown command"
             ;;

@@ -5,7 +5,7 @@
   "scripts": {
     "build": "vite build",
     "test:unit": "vue-cli-service test:unit",
-    "test": "jest",
+    "test": "jest --silent",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "dev": "vite",
     "format": "prettier --write src/",
