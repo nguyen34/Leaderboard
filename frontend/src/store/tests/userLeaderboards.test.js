@@ -1,5 +1,4 @@
 import userLeaderboards from "@/store/modules/userLeaderboards";
-import { expect } from "@jest/globals";
 import { createStore } from "vuex";
 
 describe("userLeaderboards Store Test", () => {

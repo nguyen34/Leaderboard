@@ -10,6 +10,9 @@ module.exports = {
       "^@/(.*)$": "<rootDir>/src/$1",
   },
   coveragePathIgnorePatterns: ["/node_modules/", "/tests/"],
+  transformIgnorePatterns: [
+    'node_modules/(?!vue-router|@babel|vuetify|d3-*|internmap|femtotween|nanoid|axios)',
+  ],
   coverageReporters: ["text", "json-summary"],
   // Fix in order for vue-test-utils to work with Jest 29
   // https://test-utils.vuejs.org/migration/#test-runners-upgrade-notes
