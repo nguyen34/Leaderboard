@@ -83,6 +83,9 @@
         };
         await this.addUser(user);
         this.$emit('user-added');
+        this.name = '';
+        this.age = 0;
+        this.address = '';
         this.dialog = false;
       },
     },
