@@ -51,3 +51,21 @@ class UserQueryTestCase(TestCase):
         user = add_user("testuser", 20, "testaddress")
         update_user_points(user.id, 5)
         self.assertEqual(get_user_points(user.id), 5)
+
+    def test_increment_user_points(self):
+        # Test that increment_user_points increments the user's points
+        user = add_user("testuser", 20, "testaddress")
+        increment_user_points(user.id)
+        self.assertEqual(get_user_points(user.id), 1)
+
+    def test_decrement_user_points(self):
+        # Test that decrement_user_points decrements the user's points
+        user = add_user("testuser", 20, "testaddress")
+        increment_user_points(user.id)
+        self.assertEqual(get_user_points(user.id), 1)
+        decrement_user_points(user.id)
+        self.assertEqual(get_user_points(user.id), 0)
+
+        # Test that decrement_user_points does not decrement below 0
+        decrement_user_points(user.id)
+        self.assertEqual(get_user_points(user.id), 0)

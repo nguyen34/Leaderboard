@@ -23,3 +23,18 @@ def update_user_points(id: int, points: int) -> User:
     user.points = points
     user.save()
     return user
+
+
+def increment_user_points(id: int) -> User:
+    user = User.objects.get(id=id)
+    user.points += 1
+    user.save()
+    return user
+
+
+def decrement_user_points(id: int) -> User:
+    user = User.objects.get(id=id)
+    if user.points > 0:
+        user.points -= 1
+        user.save()
+    return user

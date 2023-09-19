@@ -38,8 +38,7 @@ def add_user(request: WSGIRequest) -> JsonResponse:
 
 def increment_user_score(request: WSGIRequest, id: int) -> JsonResponse:
     try:
-        points = query.get_user_points(id) + 1
-        query.update_user_points(id, points)
+        query.increment_user_points(id)
     except Exception as e:
         return JsonResponse({"message": f'Error: {e}'}, status=400)
     return JsonResponse({"message": f'User ID: {id} score incremented!'}, status=200)
@@ -47,10 +46,7 @@ def increment_user_score(request: WSGIRequest, id: int) -> JsonResponse:
 
 def decrement_user_score(request: WSGIRequest, id: int) -> JsonResponse:
     try:
-        points = query.get_user_points(id) - 1
-        if points < 0:
-            points = 0
-        query.update_user_points(id, points)
+        query.decrement_user_points(id)
     except Exception as e:
         return JsonResponse({"message": f'Error: {e}'}, status=400)
     return JsonResponse({"message": f'User ID: {id} score decremented!'}, status=200)
