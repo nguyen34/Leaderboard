@@ -19,7 +19,7 @@
             <tr v-for="user in displayedUsers" :key="user.id" class="my-4">
              <td><v-btn variant="outlined" @click="handleDelete(user)"><v-icon icon="mdi-close"/></v-btn></td>
              <!-- TODO: Edge Case. Handle overflow for name. Also Add tooltip to display full name-->
-              <td class="px-4"><span @click="showUserDetailsDialog(user)" class="clickable">{{ user.name }}</span></td>
+              <td class="px-4"><span @click="showUserDetailsDialog(user)" class="clickable">{{ user?.name }}</span></td>
               <td class="pl-4"><v-btn variant="outlined" @click="handleIncrement(user)"><v-icon icon="mdi-plus"/></v-btn></td>
               <td class="pr-4"><v-btn :disabled="user.points === 0" variant="outlined" @click="handleDecrement(user)"><v-icon icon="mdi-minus"/></v-btn></td>
               <td class="px-4">{{ user.points }}</td>
@@ -35,10 +35,10 @@
             </v-card-title>
             <v-card-text>
               <!-- TODO: Handle overflow for Name and Address -->
-              <div>Name: {{ selectedUser.name }}</div>
-              <div>Age: {{ selectedUser.age }}</div>
-              <div>Address: {{ selectedUser.address }}</div>
-              <div>Points: {{ selectedUser.points }}</div>
+              <div>Name: {{ selectedUser?.name }}</div>
+              <div>Age: {{ selectedUser?.age }}</div>
+              <div>Address: {{ selectedUser?.address }}</div>
+              <div>Points: {{ selectedUser?.points }}</div>
             </v-card-text>
             <v-card-actions>
               <v-btn color="primary" block @click="showUserDetails = false">Close Dialog</v-btn>
@@ -144,7 +144,7 @@
         this.sortOrder = newSortOrder;
         if (this.searchFilter) {
           results = results.filter(user => {
-            return user.name.toLowerCase().includes(this.searchFilter.toLowerCase());
+            return user?.name.toLowerCase().includes(this.searchFilter.toLowerCase());
           });
         }
 

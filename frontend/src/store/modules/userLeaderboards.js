@@ -33,13 +33,11 @@ export default {
     actions: {
         async fetchUsers(context) {
             const response = await axios.get('/users/fetch/');
-            const users = response.data;
             context.commit('setUsers', users);
         },
 
         async addUser(context, user) {
             const response = await axios.post('/users/add/', user );
-            const newUser = response.data;
             context.commit('addUser', newUser);
         },
 
@@ -50,13 +48,11 @@ export default {
 
         async incrementUserScore(context, user) {
             const response = await axios.patch(`/users/increment/${user.id}`);
-            console.log(response.data);
             context.commit('incrementUserScore', user);
         },
 
         async decrementUserScore(context, user) {
             const response = await axios.patch(`/users/decrement/${user.id}`);
-            console.log(response.data);
             context.commit('decrementUserScore', user);
         }
     },
