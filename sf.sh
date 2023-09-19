@@ -82,6 +82,9 @@ fn_backend() {
         test)
             python manage.py test
             ;;
+        shell)
+            python manage.py shell
+            ;;
         *)
             echo "Unknown command"
             ;;

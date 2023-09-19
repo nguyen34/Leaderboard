@@ -7,12 +7,10 @@ import users.query as query
 
 import json
 
-# Create your views here.
 
-
-# Fetches all users from the database. Also appends csrf token to the response which we will need for later queries
-@ensure_csrf_cookie
 def fetch_users(request: WSGIRequest) -> JsonResponse:
+    # Returns all the users from the database
+    # @returns JsonResponse
     try:
         users = list(query.get_users())
         users = [user.to_dict() for user in users]
@@ -20,10 +18,10 @@ def fetch_users(request: WSGIRequest) -> JsonResponse:
         return JsonResponse({"message": f'Error: {e}'}, status=400)
     return JsonResponse(data=users, safe=False)
 
-# Adds a new User to the leaderboard, starting them off with 0 points
-
 
 def add_user(request: WSGIRequest) -> JsonResponse:
+    # Adds a new user to the database with a starting point of 0
+    # @returns JsonResponse
     data = json.loads(request.body)
     form = UserForm(data)
     if not form.is_valid():
@@ -37,6 +35,9 @@ def add_user(request: WSGIRequest) -> JsonResponse:
 
 
 def increment_user_score(request: WSGIRequest, id: int) -> JsonResponse:
+    # Increments the points of a user by 1
+    # @param id: int. The ID of the user to increment the score of
+    # @returns JsonResponse
     try:
         query.increment_user_points(id)
     except Exception as e:
@@ -45,6 +46,9 @@ def increment_user_score(request: WSGIRequest, id: int) -> JsonResponse:
 
 
 def decrement_user_score(request: WSGIRequest, id: int) -> JsonResponse:
+    # Decrements the points of a user by 1
+    # @param id: int. The ID of the user to decrement the score of
+    # @returns JsonResponse
     try:
         query.decrement_user_points(id)
     except Exception as e:
@@ -55,6 +59,9 @@ def decrement_user_score(request: WSGIRequest, id: int) -> JsonResponse:
 
 
 def delete_user(request: WSGIRequest, id: int) -> JsonResponse:
+    # Deletes a user from the database
+    # @param id: int. The ID of the user to delete
+    # @returns JsonResponse
     try:
         query.delete_user(id)
     except Exception as e:
