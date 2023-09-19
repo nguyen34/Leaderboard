@@ -39,6 +39,7 @@ export default {
 
         async addUser(context, user) {
             const response = await axios.post('/users/add/', user );
+            const newUser = response.data;
             context.commit('addUser', newUser);
         },
 
