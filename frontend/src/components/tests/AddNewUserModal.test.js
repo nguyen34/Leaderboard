@@ -1,6 +1,5 @@
 import AddNewUserModal from '@/components/AddNewUserModal';
-import { expect } from '@jest/globals';
-import { mount, shallowMount } from '@vue/test-utils';
+import { shallowMount } from '@vue/test-utils';
 import { createVuetify } from 'vuetify';
 import { createStore } from 'vuex';
 
@@ -38,8 +37,10 @@ describe('AddNewUserModal', () => {
     });
 
     it('should emit an event when the form is submitted', async () => {
+        wrapper.vm.dialog = true;
         expect(wrapper.emitted('user-added')).toBeFalsy();
         await wrapper.vm.handleSubmit();
         expect(wrapper.emitted('user-added')).toBeTruthy();
+        expect(wrapper.vm.dialog).toBe(false);
     });
 });
