@@ -33,6 +33,7 @@ export default {
     actions: {
         async fetchUsers(context) {
             const response = await axios.get('/users/fetch/');
+            const users = response.data;
             context.commit('setUsers', users);
         },
 
