@@ -17,7 +17,6 @@
           <tbody>
             <tr v-for="user in displayedUsers" :key="user.id" class="my-4">
              <td><v-btn variant="outlined" @click="handleDelete(user)"><v-icon icon="mdi-close"/></v-btn></td>
-             <!-- TODO: Edge Case. Handle overflow for name. Also Add tooltip to display full name-->
               <td class="px-4"><span @click="showUserDetailsDialog(user)" class="clickable truncate">{{ user?.name }}</span></td>
               <td class="pl-4"><v-btn variant="outlined" @click="handleIncrement(user)"><v-icon icon="mdi-plus"/></v-btn></td>
               <td class="pr-4"><v-btn :disabled="user.points === 0" variant="outlined" @click="handleDecrement(user)"><v-icon icon="mdi-minus"/></v-btn></td>
@@ -27,14 +26,12 @@
         </table>
       </div>
         <AddNewUserModal @user-added="filterAndSortUsers(sortHeader, sortOrder)" />
-        <!--TODO: Consider adding display breakpoints to re-adjust size of the card-->
         <v-dialog v-model="showUserDetails">
           <v-card class="w-50 ma-auto">
             <v-card-title>
               <span class="headline">User Details</span>
             </v-card-title>
             <v-card-text>
-              <!-- TODO: Handle overflow for Name and Address -->
               <div>Name: {{ selectedUser?.name }}</div>
               <div>Age: {{ selectedUser?.age }}</div>
               <div>Address: {{ selectedUser?.address }}</div>
