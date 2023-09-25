@@ -8,6 +8,7 @@ import users.query as query
 import json
 
 
+@ensure_csrf_cookie
 def fetch_users(request: WSGIRequest) -> JsonResponse:
     # Returns all the users from the database
     # @returns JsonResponse
