@@ -1,6 +1,9 @@
-# Spring Financial Full Stack Assessment - Leaderboard
+# Leaderboard
 
-This README provided should help explain certain aspects of my submission for Spring Financial's Full Stack Assessment, which includes how to set up, run as well as explaining some creative liberties I took when designing this project.
+
+Fun Leaderboard web application, originally devised for Spring Financial's full stack assessment but it would be a waste to let it all go for nothing. 
+
+This README includes how to set up, run as well as explaining some creative liberties I took when designing this project.
 
 This project was developed using VSCode on WSL.
 
@@ -116,15 +119,3 @@ chmod u+x sf.sh
 ```sh
 v20.2.0
 ```
-
-# Assumptions and Creative Liberties
-
-On top of fulfilling the requirements specified in the documentation, I took some assumptions and creative liberties when designing the leaderboards. Namely:
-
-1. I saved user scores into the backend. I do that by making an API call everytime an individual users score is incremented or decremented. I am aware that making an API call so frequently does hamper performance but the scale of this application was small enough that I determine it to not be too much of an issue. if it did impact performance significantly, I would implement an additional button to do a manual save instead. I am aware that this goes against the 'all users start with 0 points' requirement since on subsequent loads, it would load up the user with the last saved points amount it had, but I wanted to have more going on with these points.
-
-2. I restricted the point scoring on the leaderboard so that the user cannot go lower than zero. More of a personal choice since leaderboards I've seen usually don't have negative scores but some can. I just saw it as a good oppurtunity to build a responsive web design to disable the '-' button whenever the user's score was 0.
-
-3. There was no specifications on how adding a user works, so I went with adding an AddNewUserModal to open a separate dialog to handle the creation of a new user. I also added form validation on both the frontend and backend to prevent users from inputting incorrect values (i.e. entering a letter in the age field)
-
-4. There was no specification on how the User Details were to be shoen either, so I also just shown that in a simple dialog. Styling this would be pretty straightforward too so this is easy to adjust if needed.
